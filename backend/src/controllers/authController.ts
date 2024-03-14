@@ -1,21 +1,16 @@
 import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../config"
-import { Prisma, PrismaClient, User } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 import asyncErrorHandler from "../utils/asyncErrorHandler"
 import { encryptPassword, verifyPassword } from "../utils/password"
+import { SignUpBody } from "validators/signup"
+import { SignInBody } from "validators/signin"
 
 const prisma = new PrismaClient()
 
-export interface ReqBody {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-}
-
 export const signupController = asyncErrorHandler(async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body as ReqBody
+  const { firstName, lastName, email, password }: SignUpBody = req.body
 
   const userExists = await prisma.user.findFirst({ where: { email } })
   if (userExists) {
@@ -42,7 +37,7 @@ export const signupController = asyncErrorHandler(async (req: Request, res: Resp
 })
 
 export const signinController = asyncErrorHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body
+  const { email, password }: SignInBody = req.body
 
   const userExists = await prisma.user.findFirst({ where: { email: email } })
   if (!userExists) {
