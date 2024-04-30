@@ -4,8 +4,8 @@ import { JWT_SECRET } from "../config"
 import { Prisma, PrismaClient } from "@prisma/client"
 import asyncErrorHandler from "../utils/asyncErrorHandler"
 import { encryptPassword, verifyPassword } from "../utils/password"
-import { SignUpBody } from "validators/signup"
-import { SignInBody } from "validators/signin"
+import { SignUpBody } from "../validators/signup"
+import { SignInBody } from "../validators/signin"
 
 const prisma = new PrismaClient()
 
